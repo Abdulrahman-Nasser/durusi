@@ -25,6 +25,8 @@ class User extends Authenticatable
         'gender',
         'favCourses',
         'password',
+        'social_id',
+        'social_type',
     ];
 
     /**
