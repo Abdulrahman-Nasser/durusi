@@ -18,16 +18,14 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->unsignedBigInteger('teacherID');
-            $table->unsignedBigInteger('userID');
             $table->unsignedBigInteger('levelID');
             $table->unsignedBigInteger('coursesID');
             $table->unsignedBigInteger('termID');
-            $table->date('date');
-            $table->timestamps();
-            
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->useCurrent();
+
             // Foreign key constraints
             $table->foreign('teacherID')->references('id')->on('teachers');
-            $table->foreign('userID')->references('id')->on('users');
             $table->foreign('levelID')->references('id')->on('levels');
             $table->foreign('coursesID')->references('id')->on('courses');
             $table->foreign('termID')->references('id')->on('terms');
