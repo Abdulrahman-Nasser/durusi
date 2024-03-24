@@ -12,21 +12,23 @@ class authController extends Controller
     function register(Request $request)
     {
         $data = $request->validate([
-            "name" => "required|string|min:3|max:25",
+            "first_name" => "required|string|min:3|max:20",
+            "last_name" => 'required|string|min:3|max:20',
             "email" => "email|required|unique:users,email",
             "phone" => "required",
             "age" => "required",
             "gender" => "required",
-            "favCourses" => "required|string",
-            "password" => "required|confirmed"
+            "password" => "required|confirmed|min:8"
         ]);
         $user = User::create([
-            "name" => $data["name"],
+            "first_name" => $data["first_name"],
+            "last_name" => $data["last_name"],
             "email" => $data["email"],
             "phone" => $data["phone"],
             "age" => $data["age"],
             "gender" => $data["gender"],
-            "favCourses" => $data["favCourses"],
+            "favCourses" => $request->favCourses,
+            "yearLevel" => $request->yearLevel,
             "password" => bcrypt($data["password"]),
         ]);
         $token = $user->createToken("durusiRegister")->plainTextToken;
@@ -62,6 +64,17 @@ class authController extends Controller
         ];
 
         return response($response, 200);
+    }
+
+    function guest()
+    {
+
+        $username = 'guest' . rand(-100000, 100000);
+        $message = [
+            "mesgae" => "welcome : " . $username,
+        ];
+
+        return response($message, 200);
     }
 
     function logout()

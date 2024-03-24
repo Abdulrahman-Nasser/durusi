@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Api\videoController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,6 +15,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Auth::routes();
 Route::get('/', function () {
     return view('welcome');
+});
+
+
+Route::middleware('guest')->group(function () {
+    Route::get("viewingVideo", [videoController::class, 'getVideoPage'])->name('user.getVideo');
 });

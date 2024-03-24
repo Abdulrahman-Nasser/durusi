@@ -12,5 +12,6 @@ class Level extends Model
     protected $table = 'levels';
     protected $fillable = [
         'name',
+        'country',
     ];
 }
