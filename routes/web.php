@@ -17,7 +17,9 @@ use Illuminate\Support\Facades\Route;
 
 Auth::routes();
 
-
+Route::get('/', function () {
+    return view('home');
+});
 
 Route::middleware('guest')->group(function () {
     Route::get("viewingVideo", [videoController::class, 'getVideoPage'])->name('user.getVideo');
