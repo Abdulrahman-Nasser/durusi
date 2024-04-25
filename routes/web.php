@@ -16,11 +16,10 @@ use Illuminate\Support\Facades\Route;
 */
 
 Auth::routes();
-Route::get('/', function () {
-    return view('welcome');
-});
+
 
 
 Route::middleware('guest')->group(function () {
     Route::get("viewingVideo", [videoController::class, 'getVideoPage'])->name('user.getVideo');
+    Route::get("videos/{url}", [videoController::class, 'getOneVideo'])->name('user.getOneVideo');
 });

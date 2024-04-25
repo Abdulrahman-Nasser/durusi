@@ -9,8 +9,8 @@
                         <div class="card-body text-center bg-light ">
                             <h3> Video Name : {{ $data->videoName }}</h3>
                         </div>
-                        <video controls>
-                            <source src="{{ asset('Video/video_uploads/' . $data->videoUrl) }}">
+                        <video controls >
+                            <source src="{{ asset('Video/video_uploads/' . $data->videoName) }}">
                         </video>
                     </div>
 

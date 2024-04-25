@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Views\GroupDataView\groups_data;
 use App\Models\Units\Unit;
+use App\Models\User;
 use App\Models\Videos\Video;
 use App\Models\Views\questions_groups_units\QuestionsData;
 use App\Models\Views\videoUnits\video_units;
@@ -18,6 +19,7 @@ class levelController extends Controller
     {
         $data = $request->validate([
             'levelName' => "required",
+            'country' => 'required'
         ]);
 
 
@@ -69,6 +71,8 @@ class levelController extends Controller
     public function detailsCourse($id)
     {
         $groups = groups_data::where('id', $id)->get();
+        $users = User::all();
+        $numOfStudents = count($users);
         if ($groups->isEmpty()) {
             $response = [
                 'message' => "لا توجد بيانات متاحة لهذه المجموعة",
@@ -79,7 +83,7 @@ class levelController extends Controller
                 $group_name = $data->Group_name;
                 $response = [
                     'message' => "بيانات تفصيلية - " . $group_name,
-                    'group_data' => $groups,
+                    'group' => ['groupData' => $groups , 'numOfStudents' => $numOfStudents]
                 ];
             }
         }

@@ -18,6 +18,8 @@ class Question extends Model
         'thirdAns',
         'fourthAns',
         'correctAns',
-
+        'unitId',
+        'groupId',
+        'videoId'
     ];
 }

@@ -21,7 +21,7 @@ return new class extends Migration
             $table->integer('phone');
             $table->integer('age');
             $table->string('gender');
-            $table->string('favCourses');
+            $table->string('favSubject');
             $table->string('yearLevel');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');

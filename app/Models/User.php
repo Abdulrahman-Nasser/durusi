@@ -25,7 +25,7 @@ class User extends Authenticatable
         'phone',
         'age',
         'gender',
-        'favCourses',
+        'favSubject',
         'yearLevel',
         'password',
         'social_id',

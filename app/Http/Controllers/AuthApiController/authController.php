@@ -18,6 +18,8 @@ class authController extends Controller
             "phone" => "required",
             "age" => "required",
             "gender" => "required",
+            'favSubject' => 'required',
+            'yearLevel' => 'required',
             "password" => "required|confirmed|min:8"
         ]);
         $user = User::create([
@@ -27,8 +29,8 @@ class authController extends Controller
             "phone" => $data["phone"],
             "age" => $data["age"],
             "gender" => $data["gender"],
-            "favCourses" => $request->favCourses,
-            "yearLevel" => $request->yearLevel,
+            "favSubject" => $data['favSubject'],
+            "yearLevel" => $data['yearLevel'],
             "password" => bcrypt($data["password"]),
         ]);
         $token = $user->createToken("durusiRegister")->plainTextToken;

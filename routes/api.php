@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\levelController;
+use App\Http\Controllers\Api\questionController;
 use App\Http\Controllers\Api\unitController;
 use App\Http\Controllers\Api\videoController;
 use App\Http\Controllers\AuthApiController\authController;
@@ -25,6 +26,7 @@ Route::middleware("auth:sanctum")->group(function () {
     //*************************************  video Controller   *****************************//
     // ------------------- Get All Videos -----------------//
     Route::get('/videos', [videoController::class, 'index']);
+    Route::get("/videos/{url}", [videoController::class, 'getVideo'])->name('user.getOneVideo');
     // ------------------- Add New Video -----------------//
     Route::post('/videos', [videoController::class, 'store']);
 
@@ -33,6 +35,12 @@ Route::middleware("auth:sanctum")->group(function () {
     Route::get('/units', [unitController::class, 'index']);
     // ------------------- Add New Unit -----------------//
     Route::post('/units', [unitController::class, 'store']);
+
+    //*************************************  unit Controller   *****************************//
+    Route::get('/questions', [questionController::class, 'index']);
+    Route::post('/questions' , [questionController::class , 'store']);
+
+
 
 
     //--------------------- Logout  ----------------------//

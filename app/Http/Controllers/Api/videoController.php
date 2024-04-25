@@ -29,7 +29,6 @@ class videoController extends Controller
     {
         // request validation for adding new video in video model
         $request->validate([
-            'name' => 'required',
             'title' => 'required|string',
             'videoUpload' => "required",
             'unitID' => 'required',
@@ -46,9 +45,9 @@ class videoController extends Controller
         // Create new video into video model
         $videos = new Video();
 
-        $videos->name = $request->name;
+        $videos->name = $video_name;
         $videos->title = $request->title;
-        $videos->url =   './Video/video_uploads/' . $video_name;
+        $videos->url = rand(-10000, 10000000) . 'video' . $video_name;
         $videos->unitID = $request->unitID;
         $videos->groupID = $request->groupID;
         $videos->save();
@@ -69,9 +68,25 @@ class videoController extends Controller
         return view('videos.video')->with('videos', $videos);
     }
 
-    // get one video
-    public function getOneVideo($id)
+    // get one video web route
+    public function getOneVideo($url)
     {
-        $videos = video_units::where('videoId', $id)->get();
+
+        $videos = video_units::where('videoUrl', $url)->get();
+        return view('videos.specificVideo')->with('videos', $videos);
+    }
+
+    // get one video api route
+    public function getVideo($url)
+    {
+        $videos = video_units::where('videoUrl', $url)->get();
+
+        $message = [
+            'message' => 'get one video',
+            'Video Data' => ['video' => $videos,  'url' => 'http://localhost:8000/videos/' . $url]
+
+        ];
+
+        return response($message, 200);
     }
 }
