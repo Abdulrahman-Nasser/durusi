@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\teacherController;
 use App\Http\Controllers\Api\videoController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -21,6 +22,8 @@ Route::get('/', function () {
     return view('home');
 });
 
+
+Route::get('showTeacher/{name}', [teacherController::class, 'showTeacher']);
 Route::middleware('guest')->group(function () {
     Route::get("viewingVideo", [videoController::class, 'getVideoPage'])->name('user.getVideo');
     Route::get("videos/{url}", [videoController::class, 'getOneVideo'])->name('user.getOneVideo');

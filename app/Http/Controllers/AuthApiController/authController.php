@@ -44,29 +44,29 @@ class authController extends Controller
     }
 
 
-
     function login(Request $request)
     {
         $data = $request->validate([
-            'email' => "required|email",
-            'password' => "required"
+            'email' => 'required|email',
+            'password' => 'required'
         ]);
 
-        $user = User::where('email', '=', $data['email'])->first();
+        $user = User::where('email', $data['email'])->first();
         if (!$user || !Hash::check($data['password'], $user->password)) {
-            return ('wrong Email or password');
+            return response()->json(['error' => 'Wrong email or password'], 401);
         }
-
         $token = $user->createToken('durusi')->plainTextToken;
 
         $response = [
-            'message' => "Welcome again",
+            'message' => 'Welcome again',
             'user' => $user,
             'token' => $token
         ];
 
-        return response($response, 200);
+        return response()->json($response, 200);
     }
+
+
 
     function guest()
     {

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Videos\Video;
 use App\Models\Views\videoUnits\video_units;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class videoController extends Controller
 {
@@ -17,7 +18,7 @@ class videoController extends Controller
 
         $message = [
             'message' => 'الفيديوهات المسجلة داخل المجموعات',
-            'videos' => $videos,
+            'videos' => $videos ,
             'status' => 200
         ];
 
@@ -27,38 +28,46 @@ class videoController extends Controller
     // add new video
     public function store(Request $request)
     {
-        // request validation for adding new video in video model
-        $request->validate([
-            'title' => 'required|string',
-            'videoUpload' => "required",
-            'unitID' => 'required',
-            'groupID' => 'required'
-        ]);
+        try {
+            // request validation for adding a new video in the video model
+            $request->validate([
+                'title' => 'required|string',
+                'videoUpload' => 'required|mimes:mp4,mov,avi', // Adjust accepted file types as needed
+                'unitID' => 'required',
+                'groupID' => 'required'
+            ]);
 
-        // upload file
-        $video_data = $request->file('videoUpload');
-        $video_name = time() . $video_data->getClientOriginalName();
-        $location = public_path('./Video/video_uploads/');
-        $video_data->move($location, $video_name);
+            // upload file
+            if ($request->hasFile('videoUpload')) {
+                $video_data = $request->file('videoUpload');
+                $video_name = time() . '_' . $video_data->getClientOriginalName();
+                $location = public_path('Video/video_uploads/');
+                $video_data->move($location, $video_name);
 
+                // Create new video in the video model
+                $video = new Video();
 
-        // Create new video into video model
-        $videos = new Video();
+                $video->name = $video_name;
+                $video->title = $request->title;
+                $video->url = 'http://localhost:8000/videos/'. $video_name; // Adjust as needed
+                $video->unitID = $request->unitID;
+                $video->groupID = $request->groupID;
+                $video->save();
 
-        $videos->name = $video_name;
-        $videos->title = $request->title;
-        $videos->url = rand(-10000, 10000000) . 'video' . $video_name;
-        $videos->unitID = $request->unitID;
-        $videos->groupID = $request->groupID;
-        $videos->save();
+                $message = [
+                    "message" => 'Add New Video Success',
+                    'videoData' => $video,
+                ];
 
-
-        $message = [
-            "message" => 'Add New Video Success',
-            'videoData' => $videos,
-        ];
-
-        return response($message, 200);
+                return response()->json($message, 200);
+            } else {
+                // Handle case when no file is uploaded
+                return response()->json(['error' => 'No file uploaded.'], 400);
+            }
+        } catch (\Exception $e) {
+            // Handle any exceptions
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
     }
 
     // viewing all videos
@@ -69,21 +78,21 @@ class videoController extends Controller
     }
 
     // get one video web route
-    public function getOneVideo($url)
+    public function getOneVideo($name)
     {
 
-        $videos = video_units::where('videoUrl', $url)->get();
+        $videos = video_units::where('videoName', $name)->get();
         return view('videos.specificVideo')->with('videos', $videos);
     }
 
     // get one video api route
-    public function getVideo($url)
+    public function getVideo($name)
     {
-        $videos = video_units::where('videoUrl', $url)->get();
+        $videos = video_units::where('videoName', $name)->get();
 
         $message = [
             'message' => 'get one video',
-            'Video Data' => ['video' => $videos,  'url' => 'http://localhost:8000/videos/' . $url]
+            'Video Data' => ['video' => $videos, 'url' => 'http://localhost:8000/videos/' . $name]
 
         ];
 

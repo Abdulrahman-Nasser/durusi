@@ -19,6 +19,8 @@ return new class extends Migration
             $table->string('name');
             $table->integer('age');
             $table->string('phone');
+            $table->string('image');
+            $table->string('path');
             $table->unsignedBigInteger('course_id');
             $table->unsignedBigInteger('level_id');
             $table->foreign('course_id')->references('id')->on('courses');

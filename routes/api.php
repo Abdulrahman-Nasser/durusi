@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\levelController;
 use App\Http\Controllers\Api\questionController;
+use App\Http\Controllers\Api\teacherController;
 use App\Http\Controllers\Api\unitController;
 use App\Http\Controllers\Api\videoController;
 use App\Http\Controllers\AuthApiController\authController;
@@ -38,7 +39,16 @@ Route::middleware("auth:sanctum")->group(function () {
 
     //*************************************  unit Controller   *****************************//
     Route::get('/questions', [questionController::class, 'index']);
-    Route::post('/questions' , [questionController::class , 'store']);
+    Route::post('/questions', [questionController::class, 'store']);
+
+
+    // ************************************ teachers controller//
+    Route::controller(teacherController::class)->group(function () {
+        Route::get('teachers', 'index');
+        Route::post('teachers', 'store');
+    });
+
+
 
 
 
