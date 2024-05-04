@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\teacherController;
 use App\Http\Controllers\Api\videoController;
+use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -22,6 +23,9 @@ Route::get('/', function () {
     return view('home');
 });
 
+Route::prefix('endpoints')->group(function () {
+    Route::get('durusi', [HomeController::class, 'endpoint'])->name('endpoint');
+});
 
 Route::get('showTeacher/{name}', [teacherController::class, 'showTeacher']);
 Route::middleware('guest')->group(function () {
